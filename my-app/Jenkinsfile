@@ -11,6 +11,7 @@ pipeline {
         }
         stage("build code") {
             steps {
+                sh "cd jenkins-pipeline-example"
                 sh "mvn clean build"
                 sh "fuser -k 8080/tcp"
                 sh "cd /var/lib/jenkins/workspace/Java Project1/my-app/"
