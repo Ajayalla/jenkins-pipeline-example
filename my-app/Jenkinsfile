@@ -13,7 +13,7 @@ pipeline {
             steps {
                 sh "mvn clean build"
                 sh "fuser -k 8080/tcp"
-                sh "cd /var/lib/jenkins/workspace/DevServer-Gateway-build/target/"
+                sh "cd /var/lib/jenkins/workspace/Java Project1/my-app/"
                 sh "nohup java -jar gateway-0.0.1-SNAPSHOT.jar &"
                // sh "mvn package -Dmaven.test.skip=true"
             }
