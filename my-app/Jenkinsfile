@@ -11,8 +11,7 @@ pipeline {
         }
         stage("build code") {
             steps {
-                sh "pwd"
-                sh "ls"
+                sh "cd my-app"
                 sh "mvn clean build"
                 sh "fuser -k 8080/tcp"
                 sh "cd /var/lib/jenkins/workspace/Java Project1/my-app/"
