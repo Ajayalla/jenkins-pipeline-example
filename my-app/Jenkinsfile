@@ -1,16 +1,12 @@
 pipeline {
     agent any
-
-    tools {
-        maven "MAVEN"
-        jdk "JDK"
+    environment {
+        PATH = "/opt/apache-maven-3.6.0/bin:$PATH"
     }
-
     stages {
-        stage('Initialize'){
-            steps{
-                echo "PATH = ${M2_HOME}/bin:${PATH}"
-                echo "M2_HOME = /opt/apache-maven-3.8.6"
+        stage("clone code") {
+            steps {
+                git credentialsId: 'githublogin', branch: 'main', url: 'https://github.com/Ajayalla/jenkins-pipeline-example.git'
             }
         }
         stage('Build') {
