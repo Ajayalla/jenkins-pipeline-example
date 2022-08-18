@@ -1,23 +1,33 @@
 pipeline {
     agent any
-    environment {
-        PATH = "/opt/apache-maven-3.8.6/bin:$PATH"
+
+    tools {
+        maven "MAVEN"
+        jdk "JDK"
     }
+
     stages {
-        stage("clone code") {
-            steps {
-                git credentialsId: 'githublogin', branch: 'main', url: 'https://github.com/Ajayalla/jenkins-pipeline-example.git'
+        stage('Initialize'){
+            steps{
+                echo "PATH = ${M2_HOME}/bin:${PATH}"
+                echo "M2_HOME = /opt/apache-maven-3.8.6"
             }
         }
-        stage("build code") {
+        stage('Build') {
             steps {
-                dir("/var/lib/jenkins/workspace/Java-Project1/my-app/") {
-                    sh "mvn clean install"
-                    sh "fuser -k 8080/tcp"
-                    sh "nohup java -jar gateway-0.0.1-SNAPSHOT.jar &"
+                dir("/var/lib/jenkins/workspace/Java-Project1/my-app") {
+                sh 'mvn -B -DskipTests clean package'
                 }
-               // sh "mvn package -Dmaven.test.skip=true"
+            
             }
         }
-    }
+     }
+    post {
+       always {
+          junit(
+        allowEmptyResults: true,
+        testResults: '*/test-reports/.xml'
+      )
+      }
+   } 
 }
